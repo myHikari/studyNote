@@ -52,11 +52,11 @@ Spring Framework是Spring生态圈中最基础的项目，是其他项目的根�
 
 Spring Framework的发展也经历了很多版本的变更，每个版本都有相应的调整
 
-<img src="images/image-20210729172153796.png" alt="image-20210729172153796" style="zoom: 33%;" />
+![](images/image-20210729172153796.png)
 
 Spring Framework的5版本目前没有最新的架构图，而最新的是4版本，因此接下来主要研究的是4的架构图
 
-<img src="images/1629720945720.png" alt="1629720945720" style="zoom:50%;" />
+![](images/1629720945720.png)
 
 1. 核心层
 
@@ -91,7 +91,7 @@ Spring Framework的5版本目前没有最新的架构图，而最新的是4版�
 * AOP的具体应用,事务管理
 * IOC/DI的具体应用,整合Mybatis
 
-<img src="images/1629722300996.png" alt="1629722300996" style="zoom:50%;" />
+![](images/1629722300996.png)
 
 
 
@@ -206,7 +206,14 @@ Spring的IOC和DI，这两个概念的最终目标就是：充分解耦
 
 ##### 步骤1:创建Maven项目
 
-![1629734010072](images/1629734010072.png)
+- src
+  - main
+    - java
+    - resources
+  - test
+    - java
+
+
 
 ##### 步骤2:添加Spring的依赖jar包
 
@@ -261,7 +268,7 @@ public class BookServiceImpl implements BookService {
 
 resources下添加spring配置文件applicationContext.xml，并完成bean的配置
 
-<img src="images/1629734336440.png" alt="1629734336440" style="zoom:50%;" />
+![](images/1629734336440.png)
 
 ##### 步骤5:在配置文件中完成bean的配置
 
@@ -645,7 +652,7 @@ public class AppForName {
 * 将scope设置为`prototype`
 
   ```xml
-  <bean id="bookDao" name="dao" class="com.itheima.dao.impl.BookDaoImpl" scope="prototype"/>
+  <bean id="bookDao" name="dao" class="com.goes.dao.impl.BookDaoImpl" scope="prototype"/>
   ```
 
   运行AppForScope，打印看结果
@@ -807,17 +814,17 @@ public class BookDaoImpl implements BookDao {
 主要研究下Spring的报错信息的阅读。
 
 * 错误信息从下往上依次查看，因为上面的错误大都是对下面错误的一个包装，最核心错误是在最下面
-* Caused by: java.lang.NoSuchMethodException: com.itheima.dao.impl.BookDaoImpl.`<init>`()
+* Caused by: java.lang.NoSuchMethodException: com.goes.dao.impl.BookDaoImpl.`<init>`()
   * Caused by 翻译为`引起`，即出现错误的原因
   * java.lang.NoSuchMethodException:抛出的异常为：没有这样的方法异常
-  * com.itheima.dao.impl.BookDaoImpl.`<init>`()：哪个类的哪个方法没有被找到导致的异常，`<init>`()指定是类的构造方法，即该类的无参构造方法
+  * com.goes.dao.impl.BookDaoImpl.`<init>`()：哪个类的哪个方法没有被找到导致的异常，`<init>`()指定是类的构造方法，即该类的无参构造方法
 
 如果最后一行错误获取不到错误信息，接下来查看第二层:
 
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.itheima.dao.impl.BookDaoImpl]: No default constructor found; nested exception is java.lang.NoSuchMethodException: com.itheima.dao.impl.BookDaoImpl.`<init>`()
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.goes.dao.impl.BookDaoImpl]: No default constructor found; nested exception is java.lang.NoSuchMethodException: com.goes.dao.impl.BookDaoImpl.`<init>`()
 
 * nested：嵌套的意思，后面的异常内容和最底层的异常是一致的
-* Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.itheima.dao.impl.BookDaoImpl]: No default constructor found; 
+* Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.goes.dao.impl.BookDaoImpl]: No default constructor found; 
   * Caused by: `引发`
   * BeanInstantiationException：翻译为`bean实例化异常`
   * No default constructor found：没有一个默认的构造函数被发现
@@ -940,7 +947,7 @@ public class OrderDaoFactory {
    }
    ```
 
-2. 创建一个工厂类OrderDaoFactory并提供一个普通方法，注意此处和静态工厂的工厂类不一样的地方是方法不是静态方法
+2. 创建一个工厂类UserDaoFactory并提供一个普通方法，注意此处和静态工厂的工厂类不一样的地方是方法不是静态方法
 
    ```java
    public class UserDaoFactory {
@@ -1961,7 +1968,7 @@ public class BookDaoImpl implements BookDao {
 方式二:删除type属性，添加index属性，按照索引下标注入，下标从0开始
 
 ```xml
-<bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl">
+<bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl">
     <constructor-arg index="1" value="100"/>
     <constructor-arg index="0" value="mysql"/>
 </bean>
@@ -2155,9 +2162,9 @@ Spring的依赖注入的实现方式:
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.itheima.dao.impl.BookDaoImpl"/>
+    <bean class="com.goes.dao.impl.BookDaoImpl"/>
     <!--autowire属性：开启自动装配，通常使用按类型装配-->
-    <bean id="bookService" class="com.itheima.service.impl.BookServiceImpl" autowire="byName"/>
+    <bean id="bookService" class="com.goes.service.impl.BookServiceImpl" autowire="byName"/>
 
 </beans>
 ```
@@ -2261,7 +2268,7 @@ Spring的依赖注入的实现方式:
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
    
-       <bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl"/>
+       <bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl"/>
    </beans>
    ```
 
@@ -2317,7 +2324,7 @@ Spring的依赖注入的实现方式:
 <property name="list">
     <list>
         <value>itcast</value>
-        <value>itheima</value>
+        <value>goes</value>
         <value>boxuegu</value>
         <value>chuanzhihui</value>
     </list>
@@ -2332,7 +2339,7 @@ Spring的依赖注入的实现方式:
 <property name="set">
     <set>
         <value>itcast</value>
-        <value>itheima</value>
+        <value>goes</value>
         <value>boxuegu</value>
         <value>boxuegu</value>
     </set>
@@ -2750,7 +2757,7 @@ public class BookDaoImpl implements BookDao {
     
     <context:property-placeholder location="jdbc.properties"/>
     
-    <bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl">
+    <bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl">
         <property name="name" value="${jdbc.driver}"/>
     </bean>
 </beans>
@@ -2802,7 +2809,7 @@ public class App {
       
       <context:property-placeholder location="jdbc.properties"/>
       
-      <bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl">
+      <bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl">
           <property name="name" value="${username}"/>
       </bean>
   </beans>
@@ -3091,7 +3098,7 @@ public class BookDaoImpl implements BookDao {
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="
               http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-      <bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl"  lazy-init="true"/>
+      <bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl"  lazy-init="true"/>
   </beans>
   ```
 
@@ -3193,7 +3200,7 @@ Spring的IOC/DI对应的配置开发就已经讲解完成，但是使用起来�
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="
               http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-      <bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl"/>
+      <bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl"/>
   </beans>
   ```
 
@@ -3248,7 +3255,7 @@ Spring的IOC/DI对应的配置开发就已经讲解完成，但是使用起来�
 将配置文件中的`<bean>`标签删除掉
 
 ```xml
-<bean id="bookDao" class="com.itheima.dao.impl.BookDaoImpl"/>
+<bean id="bookDao" class="com.goes.dao.impl.BookDaoImpl"/>
 ```
 
 #### 步骤2:Dao上添加注解
@@ -3509,7 +3516,7 @@ public class AppForAnnotation {
 
   ```java
   @Configuration
-  @ComponentScan("com.itheima")
+  @ComponentScan("com.goes")
   public class SpringConfig {
   }
   ```
@@ -4602,7 +4609,7 @@ public class App {
         // 1. 创建SqlSessionFactoryBuilder对象
         SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
         // 2. 加载SqlMapConfig.xml配置文件
-        InputStream inputStream = Resources.getResourceAsStream("SqlMapConfig.xml.bak");
+        InputStream inputStream = Resources.getResourceAsStream("SqlMapConfig.xml");
         // 3. 创建SqlSessionFactory对象
         SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(inputStream);
         // 4. 获取SqlSession
@@ -4988,7 +4995,7 @@ public class BookDaoImpl implements BookDao {
   * 在SpringAOP中，理解为方法的执行
 * 切入点(Pointcut):匹配连接点的式子
   * 在SpringAOP中，一个切入点可以描述一个具体方法，也可也匹配多个方法
-    * 一个具体的方法:如com.itheima.dao包下的BookDao接口中的无形参无返回值的save方法
+    * 一个具体的方法:如com.goes.dao包下的BookDao接口中的无形参无返回值的save方法
     * 匹配多个方法:所有的save方法，所有的get开头的方法，所有以Dao结尾的接口中的任意方法，所有带有一个参数的方法
   * 连接点范围要比切入点范围大，是切入点的方法也一定是连接点，但是是连接点的方法就不一定要被增强，所以可能不是切入点。
 * 通知(Advice):在切入点处执行的操作，也就是共性功能
@@ -5447,7 +5454,7 @@ execution(public User com.goes.service.UserService.findById(int))
 * execution：动作关键字，描述切入点的行为动作，例如execution表示执行到指定切入点
 * public:访问修饰符,还可以是public，private等，可以省略
 * User：返回值，写返回值类型
-* com.itheima.service：包名，多级包使用点连接
+* com.goes.service：包名，多级包使用点连接
 * UserService:类/接口名称
 * findById：方法名
 * int:参数，直接写参数的类型，多个类型用逗号隔开
@@ -5519,10 +5526,10 @@ execution(* *..*e(..))
 execution(void com..*())
 返回值为void，com包下的任意包任意类任意方法，能匹配，*代表的是方法
 
-execution(* com.itheima.*.*Service.find*(..))
+execution(* com.goes.*.*Service.find*(..))
 将项目中所有业务层方法的以find开头的方法匹配
 
-execution(* com.itheima.*.*Service.save*(..))
+execution(* com.goes.*.*Service.save*(..))
 将项目中所有业务层方法的以save开头的方法匹配
 ```
 
@@ -5820,10 +5827,10 @@ public class App {
 运行后会报错，错误内容为:
 
 ```cmd
-Exception in thread "main" org.springframework.aop.AopInvocationException: ==Null return value from advice does not match primitive return type for: public abstract int com.itheima.dao.BookDao.select()==
+Exception in thread "main" org.springframework.aop.AopInvocationException: ==Null return value from advice does not match primitive return type for: public abstract int com.goes.dao.BookDao.select()==
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:226)
 	at com.sun.proxy.$Proxy19.select(Unknown Source)
-	at com.itheima.App.main(App.java:12)
+	at com.goes.App.main(App.java:12)
 ```
 
 错误大概的意思是:`空的返回不匹配原始方法的int返回`
@@ -6725,7 +6732,7 @@ public class BookDaoImpl implements BookDao {
 
 * 点击链接，会提示，请输入提取码，如下图所示
 
-  <img src="images/1630240528228.png" alt="1630240528228" style="zoom: 50%;" />
+  ![](images/1630240528228.png)
 
 * 当我们从别人发给我们的内容中复制提取码的时候，有时候会多复制到一些空格，直接粘贴到百度的提取码输入框
 
